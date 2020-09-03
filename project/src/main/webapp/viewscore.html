@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {margin:0;}
+
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding-left:100px;
+  padding-right:100px;
+
+}
+
+.navbar a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.navbar a:hover {
+  background: #ddd;
+  color: black;
+}
+.button{
+background-color: #FFC107; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.main {
+  padding: 16px;
+  margin-top: 30px;
+  text-align:center;
+  height: 1500px; /* Used in this example to enable scrolling */
+}
+</style>
+</head>
+<script>
+function myFunction() {
+	var data=null;
+	var text1=null;
+	var xhr = new XMLHttpRequest();
+	xhr.withCredentials = true;
+
+	xhr.addEventListener("readystatechange", function() {
+	  if(this.readyState === 4) {
+	    console.log(this.responseText);
+	    data=this.responseText;
+	    console.log(data)
+	    text1=JSON.parse(data);
+	    for(i=0;i<text1.length;i++)
+	    	{
+	    	console.log(i);
+	    	console.log(text1[i].id);
+	    	    if(text1[i].matchstarted){
+	    	    	var res = document.createElement("div");
+	    	    	  res.style.color="#1A237E";
+	    	    	  res.style.border="2px solid #3F51B5";
+	    	    	  res.style.width="200px";
+	    	    	  res.style.height="50px";
+	    	    	  res.style.paddingTop="30px";
+	    	    	  res.innerHTML = text1[i].teamA + " VS "+ text1[i].teamB;
+	    	    	  res.appendChild(document.createElement("br"));
+	    	    	  para= document.createElement("para");
+	    	    	  link = document.createElement("a");
+	    	    	  link.href = "results.html";
+	    	    	  link.target = "_blank";
+                      link.innerHTML="View Score";
+	    	    	  link.style.color="#4CAF50"
+	    	    	  res.appendChild(link);
+	    	    	  document.getElementById("results").appendChild(res); 
+	    	console.log(text1[i].teamA);
+	    	console.log(text1[i].teamB);
+	    	
+	    		}
+	    	 
+	    	    document.getElementById("results").appendChild(document.createElement("br"));
+	    	}
+	    
+	  }
+	});
+
+	xhr.open("GET", "http://localhost:8080/spring-mvc-restfull-crud/api/matchlist");
+   xhr.send();
+   
+  
+  
+}
+
+</script>
+<body>
+
+<div class="navbar">
+  <a href="#home">Home</a>
+  <a href="#news">PreviousMatches</a>
+  <a href="#contact">Countries</a>
+  <a href="#contact">Teams</a>
+</div>
+
+<div class="main">
+<p id="demo"></p>
+<h1 style="color:#3F51B5;">Current Matches</h1>
+<button class="button" onclick="myFunction()">ListOfmatches</button><br/><br/>
+  <div id="results" align="center">
+  </div>
+</div>
+</body>
+</html>
